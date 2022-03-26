@@ -1,0 +1,19 @@
+global:
+  resolve_timeout: 5m
+route:
+#    receiver: 'slack'
+    receiver: 'alertmanager-bot'
+
+receivers:
+#    - name: 'slack'
+#      slack_configs:
+#          - send_resolved: true
+#            text: "{{ .CommonAnnotations.description }}"
+#            username: 'Prometheus'
+#            channel: '#<channel-name>'
+#            channel: '#grafana-alerts'
+#            api_url: 'https://hooks.slack.com/services/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'
+    - name: 'alertmanager-bot'
+      webhook_configs:
+        - send_resolved: true
+          url: 'http://51.250.72.184:8081'
