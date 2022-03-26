@@ -15,7 +15,9 @@ services:
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     restart: unless-stopped
-    network_mode: host
+#    network_mode: host
+    networks:
+      - net
     labels:
       org.label-schema.group: "monitoring"
 
@@ -32,8 +34,23 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
       - /cgroup:/cgroup:ro
     restart: unless-stopped
-    network_mode: host
+#    network_mode: host
+    networks:
+      - net
+    ports:
+      - 8080:8080
     labels:
       org.label-schema.group: "monitoring"
-  
 
+  nginx:
+    image: nginx:1.21-alpine
+    ports:
+      - 8000:80
+    restart: unless-stopped
+    networks:
+      - net
+    volumes:
+      - ./nginx:/etc/nginx/conf.d:ro
+
+networks:
+  net:
